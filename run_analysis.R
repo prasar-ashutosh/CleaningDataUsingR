@@ -22,9 +22,9 @@ train_subjects<-read.csv("train/subject_train.txt", sep="", header=FALSE);
 merged_subjects<-rbind(test_subjects,train_subjects);
 names(merged_subjects)<-"subject_id";
 
-# Read all the name of 6 activity labels and join with merged_labels
+# Read all the name of 6 activity labels and map it to merged_labels
 activity_labels<-read.csv("activity_labels.txt", sep="", header=FALSE);
-merged_labels_enriched<-merge(merged_labels,activity_labels);
+merged_labels$V2<-factor(merged_labels$V1,levels = activity_labels$V1,labels = activity_labels$V2);
 names(merged_labels)<-c("activity_id","activity_name");
 
 # Column bind Subjects , Labels and mesaurement Data together into data_complete
@@ -37,5 +37,4 @@ data_grouped<-group_by(data_complete, subject_id, activity_name);
 summarized_data<-summarise_each(data_grouped, funs(mean));
 
 # Write the summarized_data into file system
-write.table(summarized_data,"output/summarized_data.txt",sep=",",quote=FALSE, row.names=FALSE)
 write.table(summarized_data,"output/summarized_data.txt",sep=",",quote=FALSE, row.names=FALSE)
