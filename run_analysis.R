@@ -25,10 +25,10 @@ names(merged_subjects)<-"subject_id";
 # Read all the name of 6 activity labels and join with merged_labels
 activity_labels<-read.csv("activity_labels.txt", sep="", header=FALSE);
 merged_labels_enriched<-merge(merged_labels,activity_labels);
-names(merged_labels_enriched)<-c("activity_id","activity_name");
+names(merged_labels)<-c("activity_id","activity_name");
 
 # Column bind Subjects , Labels and mesaurement Data together into data_complete
-data_complete<-cbind(merged_subjects,merged_labels_enriched,merged_data_subset);
+data_complete<-cbind(merged_subjects,merged_labels,merged_data_subset);
 
 # Group by subject_id and activity_name
 data_grouped<-group_by(data_complete, subject_id, activity_name);
@@ -37,4 +37,5 @@ data_grouped<-group_by(data_complete, subject_id, activity_name);
 summarized_data<-summarise_each(data_grouped, funs(mean));
 
 # Write the summarized_data into file system
+write.table(summarized_data,"output/summarized_data.txt",sep=",",quote=FALSE, row.names=FALSE)
 write.table(summarized_data,"output/summarized_data.txt",sep=",",quote=FALSE, row.names=FALSE)
