@@ -1,0 +1,26 @@
+---
+title: "TaxiDataSingapore"
+author: "Ashutosh"
+date: "2 September 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+The map dispplays available cabs in Singapore at 1:10 AM Singapore time on 2 September 2017. 
+
+```{r}
+library(jsonlite)
+df <- fromJSON("taxi_data.json")
+df <- df$value
+names(df) <- c ("lng","lat")
+```
+
+```{r}
+library(leaflet)
+df %>% leaflet() %>% addTiles() %>% addMarkers(clusterOptions = markerClusterOptions())
+```
